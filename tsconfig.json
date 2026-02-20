@@ -14,7 +14,7 @@
         "dist/mat-tab-group-gesture"
       ]
     },
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2020",
