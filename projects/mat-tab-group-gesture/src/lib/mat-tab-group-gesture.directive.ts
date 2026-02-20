@@ -5,8 +5,9 @@ import { fromEvent } from 'rxjs';
 import { pairwise, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
-  selector: 'mat-tab-group[matTabGroupGesture]'
+    // tslint:disable-next-line:directive-selector
+    selector: 'mat-tab-group[matTabGroupGesture]',
+    standalone: false
 })
 export class MatTabGroupGestureDirective implements OnInit {
 
