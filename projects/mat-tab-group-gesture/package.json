@@ -1,24 +1,30 @@
 {
-  "name": "@angular-material-gesture/mat-tab-group-gesture",
-  "version": "1.5.0",
+  "name": "@arcanefeenix/mat-tab-group-gesture",
+  "version": "20.1.0",
   "description": "An angular directive to add gesture behaviors to @angular/material mat-tab-group component",
-  "homepage": "https://github.com/Gaiidenn/angular-material-gesture/tree/master/projects/mat-tab-group-gesture",
-  "author": "Jérôme Vanbersy <j.vanbersy@gmail.com> (https://github.com/Gaiidenn)",
+  "homepage": "https://github.com/arcanefeenix/angular-material-gesture/tree/master/projects/mat-tab-group-gesture",
+  "author": "Brandon McWhirter <brandon@arcanefeenix.com> (https://github.com/arcanefeenix)",
   "repository": {
-    "type": "git",
-    "url": "https://github.com/Gaiidenn/angular-material-gesture/tree/master/projects/mat-tab-group-gesture"
+    "url": "git+https://github.com/arcanefeenix/angular-material-gesture.git#master"
   },
   "peerDependencies": {
-    "@angular/common": "^16.2.12",
-    "@angular/core": "^16.2.12",
-    "@angular/material": "^16.2.12",
-    "@angular/cdk": "^16.2.12"
+    "@angular/common": "^20.3.16",
+    "@angular/core": "^20.3.16",
+    "@angular/material": "^20.2.14",
+    "@angular/cdk": "^20.2.14"
   },
   "dependencies": {
     "tslib": "^2.5.0"
   },
   "license": "MIT",
-  "main": "karma.conf.js",
+  "module": "./fesm2022/arcanefeenix-mat-tab-group-gesture.mjs",
+  "typings": "./index.d.ts",
+  "files": [
+    "./fesm2022/",
+    "./index.d.ts",
+    "./package.json",
+    "./README.md"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -52,41 +52,58 @@ export class MatTabGroupGestureDirective implements OnInit {
   }
 
   private _handleHeadersEvents(): void {
-    // this will capture all touchstart events from the headers element
-    fromEvent(this.headers, 'touchstart')
-      .pipe(
-        tap(() => {
-          this.originalHeadersListTransition = this.headersList.style.transition;
-          this.headersList.style.transition = 'none';
-          this.headersMaxScroll = -1 * (
-            this.headersList.offsetWidth - this.headers.offsetWidth
-            + this.prevButton.offsetWidth + this.nextButton.offsetWidth);
-        }),
-        switchMap((e) => {
-          // after a mouse down, we'll record all mouse moves
-          return fromEvent(this.headers, 'touchmove')
-            .pipe(
-              // we'll stop (and unsubscribe) once the user releases the mouse
-              // this will trigger a 'mouseup' event
-              takeUntil(fromEvent(this.headers, 'touchend').pipe(
-                tap(() => this.headersList.style.transition = this.originalHeadersListTransition),
-                tap(() => this.tabGroup._tabHeader.scrollDistance = this._getScrollDistance()),
-              )),
-              // pairwise lets us get the previous value to draw a line from
-              // the previous point to the current point
-              pairwise()
-            );
-        })
-      )
-      .subscribe((res: [any, any]) => {
-        const rect = this.headers.getBoundingClientRect();
-        // previous and current position with the offset
-        const prevX = res[0].touches[0].clientX - rect.left;
+    // Improved: robust horizontal drag detection and window-level event listeners
+    let isDragging = false;
+    let isHorizontalDrag = false;
+    let startX = 0;
+    let startY = 0;
+    let lastX = 0;
+    let lastY = 0;
 
-        const currentX = res[1].touches[0].clientX - rect.left;
+    fromEvent(this.headers, 'touchstart').subscribe((startEvent: TouchEvent) => {
+      if (!startEvent.touches || startEvent.touches.length === 0) return;
+      isDragging = true;
+      isHorizontalDrag = false;
+      startX = lastX = startEvent.touches[0].clientX;
+      startY = lastY = startEvent.touches[0].clientY;
+      this.originalHeadersListTransition = this.headersList.style.transition;
+      this.headersList.style.transition = 'none';
+      this.headersMaxScroll = -1 * (
+        this.headersList.offsetWidth - this.headers.offsetWidth
+        + this.prevButton.offsetWidth + this.nextButton.offsetWidth);
 
-        this._scrollHeaders( currentX - prevX);
-      });
+      const moveListener = (moveEvent: TouchEvent) => {
+        if (!isDragging || !moveEvent.touches || moveEvent.touches.length === 0) return;
+        const currentX = moveEvent.touches[0].clientX;
+        const currentY = moveEvent.touches[0].clientY;
+        const dx = currentX - startX;
+        const dy = currentY - startY;
+
+        // Determine drag direction on first significant move
+        if (!isHorizontalDrag && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+          isHorizontalDrag = Math.abs(dx) > Math.abs(dy);
+        }
+
+        if (isHorizontalDrag) {
+          moveEvent.preventDefault();
+          // Only scroll horizontally
+          this._scrollHeaders(currentX - lastX);
+        }
+        lastX = currentX;
+        lastY = currentY;
+      };
+
+      const endListener = () => {
+        isDragging = false;
+        window.removeEventListener('touchmove', moveListener, { passive: false } as any);
+        window.removeEventListener('touchend', endListener);
+        this.headersList.style.transition = this.originalHeadersListTransition;
+        this.tabGroup._tabHeader.scrollDistance = this._getScrollDistance();
+      };
+
+      window.addEventListener('touchmove', moveListener, { passive: false } as any);
+      window.addEventListener('touchend', endListener);
+    });
   }
 
   private _scrollHeaders(scrollX: number): void {

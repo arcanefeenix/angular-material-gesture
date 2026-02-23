@@ -1,3 +1,8 @@
+### 20.1.0 (2026-02-23)
+* Better gesture handling
+
+### 20.0.0 (2026-02-20)
+* Updated to support Angular 20
 
 ### 1.0.4 (2021-05-02)
 * Changed live demo link in documentation

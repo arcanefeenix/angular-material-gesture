@@ -1,0 +1,4 @@
+karma.conf.js
+tsconfig*.json
+ng-package.json
+e2e/
