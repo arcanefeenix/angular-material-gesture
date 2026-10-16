@@ -11,6 +11,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * Angular 15 => v1.4.0
 * Angular 16 => v1.5.0
 * Angular 20 => v20.1.0
+* Angular 21 => v21.0.0
 
 ## Development server
 

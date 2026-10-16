@@ -60,7 +60,7 @@ export class MatTabGroupGestureDirective implements OnInit {
     let lastX = 0;
     let lastY = 0;
 
-    fromEvent(this.headers, 'touchstart').subscribe((startEvent: TouchEvent) => {
+    fromEvent<TouchEvent>(this.headers, 'touchstart').subscribe((startEvent: TouchEvent) => {
       if (!startEvent.touches || startEvent.touches.length === 0) return;
       isDragging = true;
       isHorizontalDrag = false;
@@ -124,7 +124,7 @@ export class MatTabGroupGestureDirective implements OnInit {
 
   private _getScrollDistance(): number {
     const style = window.getComputedStyle(this.headersList);
-    const matrix = new WebKitCSSMatrix(style.transform);
+    const matrix = new DOMMatrix(style.transform);
     const translateX = matrix.m41;
     return translateX * -1;
   }
@@ -191,19 +191,20 @@ export class MatTabGroupGestureDirective implements OnInit {
   }
 
   private _prevTab(): void {
-    if (this.tabGroup.selectedIndex === 0 || this.tabGroup.selectedIndex === null) {
-      this.tabGroup.selectedIndex = this.connectEdges ? this.tabGroup._tabs.length - 1 : this.tabGroup.selectedIndex;
+    const current = this.tabGroup.selectedIndex ?? 0;
+    if (current === 0) {
+      this.tabGroup.selectedIndex = this.connectEdges ? this.tabGroup._tabs.length - 1 : 0;
     }
-    else { this.tabGroup.selectedIndex = this.tabGroup.selectedIndex - 1; }
+    else { this.tabGroup.selectedIndex = current - 1; }
     this.tabGroup.updatePagination();
   }
 
   private _nextTab(): void {
-    if (this.tabGroup.selectedIndex === this.tabGroup._tabs.length - 1) {
-      this.tabGroup.selectedIndex = this.connectEdges ? 0 : this.tabGroup.selectedIndex;
+    const current = this.tabGroup.selectedIndex ?? 0;
+    if (current === this.tabGroup._tabs.length - 1) {
+      this.tabGroup.selectedIndex = this.connectEdges ? 0 : current;
     }
-    else if (this.tabGroup.selectedIndex === null) { this.tabGroup.selectedIndex = 0; }
-    else { this.tabGroup.selectedIndex = this.tabGroup.selectedIndex + 1; }
+    else { this.tabGroup.selectedIndex = current + 1; }
     this.tabGroup.updatePagination();
   }
 

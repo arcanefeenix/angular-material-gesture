@@ -2,27 +2,18 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "esModuleInterop": true,
-    "declaration": false,
     "experimentalDecorators": true,
     "paths": {
       "mat-tab-group-gesture": [
-        "dist/mat-tab-group-gesture/mat-tab-group-gesture",
-        "dist/mat-tab-group-gesture"
+        "./dist/mat-tab-group-gesture/mat-tab-group-gesture",
+        "./dist/mat-tab-group-gesture"
       ]
     },
-    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "es2020",
-    "lib": [
-      "es2018",
-      "dom"
-    ],
-    "useDefineForClassFields": false
+    "module": "preserve"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false

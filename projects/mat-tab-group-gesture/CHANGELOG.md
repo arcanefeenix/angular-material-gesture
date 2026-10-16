@@ -1,3 +1,6 @@
+### 21.0.0 (2026-06-15)
+* Updated to support Angular 21
+
 ### 20.1.0 (2026-02-23)
 * Better gesture handling
 
