@@ -1,3 +1,6 @@
+### 22.0.0 (2026-10-16)
+* Updated to support Angular 22
+
 ### 21.0.0 (2026-06-15)
 * Updated to support Angular 21
 
